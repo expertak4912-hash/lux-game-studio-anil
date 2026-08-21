@@ -14,7 +14,7 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 //   Vercel                                  → NITRO_PRESET=vercel
 //
 // Nothing in the application code is host-specific; only this preset changes.
-const preset = process.env["NITRO_PRESET"] ?? "node-server";
+const preset = process.env["NITRO_PRESET"] ?? (process.env["VERCEL"] ? "vercel" : "node-server");
 
 export default defineConfig({
   tanstackStart: {
