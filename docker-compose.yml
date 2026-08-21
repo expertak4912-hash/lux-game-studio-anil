@@ -1,0 +1,25 @@
+# Runs the production build locally in a container.
+#
+#   docker compose up --build
+#
+# The app connects to your online MongoDB Atlas cluster using MONGODB_URI from .env — no local
+# database container is started, so what runs here matches production exactly.
+
+services:
+  app:
+    build: .
+    ports:
+      - "${PORT:-3000}:3000"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

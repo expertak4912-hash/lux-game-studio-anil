@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TODO: set BASE_URL once a project name or custom domain is configured. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>/</loc></url>
+  <url><loc>/sports</loc></url>
+  <url><loc>/casino</loc></url>
+  <url><loc>/games</loc></url>
+  <url><loc>/about</loc></url>
+  <url><loc>/contact</loc></url>
+  <url><loc>/faq</loc></url>
+  <url><loc>/responsible-gaming</loc></url>
+  <url><loc>/privacy-policy</loc></url>
+  <url><loc>/terms</loc></url>
+</urlset>
