@@ -13,7 +13,13 @@ export const Route = createFileRoute("/admin/hero")({
       fields={[
         { name: "title", label: "Heading", full: true },
         { name: "description", label: "Description", type: "textarea", full: true },
-        { name: "image_url", label: "Background image", type: "image" },
+        {
+          name: "image_url",
+          label: "Slide background image",
+          type: "image",
+          desktopSize: "1920 x 1080",
+          mobileSize: "800 x 1200",
+        },
         { name: "button_text", label: "Button text" },
         { name: "button_url", label: "Button link" },
         { name: "sort_order", label: "Order", type: "number" },

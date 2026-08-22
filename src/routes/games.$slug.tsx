@@ -4,9 +4,11 @@ import { PageHero } from "@/components/site/PageHero";
 import { CmsContent } from "@/components/site/CmsContent";
 import { Reveal } from "@/components/site/Reveal";
 import { HowItWorks } from "@/components/site/HowItWorks";
+import { ResponsiveImage } from "@/components/site/ResponsiveImage";
 import { WhatsAppButton } from "@/components/site/WhatsAppButton";
 import { gameBySlugQuery } from "@/lib/cms-queries";
 import { gameImage } from "@/lib/cms-content";
+import { pickImagePair } from "@/lib/image-pair";
 
 export const Route = createFileRoute("/games/$slug")({
   loader: async ({ context, params }) => {
@@ -40,13 +42,21 @@ export const Route = createFileRoute("/games/$slug")({
 function GameDetail() {
   const { game } = Route.useLoaderData();
 
+  // The page background when one is uploaded, otherwise the card art — pair by pair, so a
+  // background with no mobile upload does not borrow the card's mobile file.
+  const hero = pickImagePair(
+    [game.background_image, game.background_image_mobile],
+    [gameImage(game.slug, game.featured_image), game.featured_image_mobile],
+  );
+
   return (
     <>
       <PageHero
         eyebrow={game.tag || "Games"}
         title={game.name}
         {...(game.short_description ? { description: game.short_description } : {})}
-        image={game.background_image ?? gameImage(game.slug, game.featured_image)}
+        {...(hero.src ? { image: hero.src } : {})}
+        mobileImage={hero.mobileSrc}
       />
 
       <section className="section-shell py-16 lg:py-24">
@@ -62,8 +72,9 @@ function GameDetail() {
           <Reveal>
             <article className="glass-card mt-6 overflow-hidden rounded-3xl">
               <div className="aspect-video overflow-hidden">
-                <img
+                <ResponsiveImage
                   src={gameImage(game.slug, game.featured_image)}
+                  mobileSrc={game.featured_image_mobile}
                   alt={`${game.name} artwork`}
                   className="size-full object-cover"
                 />

@@ -78,6 +78,8 @@ export type SiteChrome = {
   footerSettings: FooterSettings | null;
   backgroundSettings: BackgroundSetting[];
   navigationItems: NavigationItem[];
+  /** The built-in pages listed in `site-pages.ts`, when an admin has customised them. */
+  sitePages: PageRow[];
 };
 
 export const siteChromeQuery = () =>

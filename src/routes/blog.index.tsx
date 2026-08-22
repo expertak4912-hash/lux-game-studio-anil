@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { CalendarDays } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/site/Reveal";
+import { ResponsiveImage } from "@/components/site/ResponsiveImage";
 import { Button } from "@/components/ui/button";
 import { useBlogCategories, useBlogPosts } from "@/lib/cms-content";
 import { blogCategoriesQuery, blogPostsQuery } from "@/lib/cms-queries";
@@ -87,10 +88,11 @@ function BlogIndex() {
             {shown.map((post, i) => (
               <Reveal as="li" key={post.id} delay={i * 70} className="group">
                 <article className="glass-card flex h-full flex-col overflow-hidden rounded-3xl transition-all duration-500 group-hover:-translate-y-2">
-                  {post.featured_image && (
+                  {(post.featured_image || post.featured_image_mobile) && (
                     <div className="aspect-video overflow-hidden">
-                      <img
+                      <ResponsiveImage
                         src={post.featured_image}
+                        mobileSrc={post.featured_image_mobile}
                         alt={post.title}
                         loading="lazy"
                         className="size-full object-cover transition-transform duration-700 group-hover:scale-110"

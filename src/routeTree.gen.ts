@@ -13,10 +13,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as BuiltForYouRouteImport } from './routes/built-for-you'
 import { Route as CasinoRouteImport } from './routes/casino'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as GamesRouteImport } from './routes/games'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as ResponsibleGamingRouteImport } from './routes/responsible-gaming'
 import { Route as SportsRouteImport } from './routes/sports'
@@ -39,6 +41,7 @@ import { Route as AdminPromotionsRouteImport } from './routes/admin.promotions'
 import { Route as AdminScreenshotsRouteImport } from './routes/admin.screenshots'
 import { Route as AdminSeoRouteImport } from './routes/admin.seo'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminSitePagesRouteImport } from './routes/admin.site-pages'
 import { Route as AdminSportsRouteImport } from './routes/admin.sports'
 import { Route as AdminSupportRouteImport } from './routes/admin.support'
 import { Route as AdminThemeRouteImport } from './routes/admin.theme'
@@ -68,6 +71,11 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BuiltForYouRoute = BuiltForYouRouteImport.update({
+  id: '/built-for-you',
+  path: '/built-for-you',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CasinoRoute = CasinoRouteImport.update({
   id: '/casino',
   path: '/casino',
@@ -86,6 +94,11 @@ const FaqRoute = FaqRouteImport.update({
 const GamesRoute = GamesRouteImport.update({
   id: '/games',
   path: '/games',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
@@ -198,6 +211,11 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSitePagesRoute = AdminSitePagesRouteImport.update({
+  id: '/site-pages',
+  path: '/site-pages',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSportsRoute = AdminSportsRouteImport.update({
   id: '/sports',
   path: '/sports',
@@ -244,10 +262,12 @@ export interface FileRoutesByFullPath {
   '/$slug': typeof SlugRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/built-for-you': typeof BuiltForYouRoute
   '/casino': typeof CasinoRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/games': typeof GamesRouteWithChildren
+  '/how-it-works': typeof HowItWorksRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/responsible-gaming': typeof ResponsibleGamingRoute
   '/sports': typeof SportsRouteWithChildren
@@ -269,6 +289,7 @@ export interface FileRoutesByFullPath {
   '/admin/screenshots': typeof AdminScreenshotsRoute
   '/admin/seo': typeof AdminSeoRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/site-pages': typeof AdminSitePagesRoute
   '/admin/sports': typeof AdminSportsRoute
   '/admin/support': typeof AdminSupportRoute
   '/admin/theme': typeof AdminThemeRoute
@@ -283,10 +304,12 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
   '/about': typeof AboutRoute
+  '/built-for-you': typeof BuiltForYouRoute
   '/casino': typeof CasinoRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/games': typeof GamesRouteWithChildren
+  '/how-it-works': typeof HowItWorksRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/responsible-gaming': typeof ResponsibleGamingRoute
   '/sports': typeof SportsRouteWithChildren
@@ -308,6 +331,7 @@ export interface FileRoutesByTo {
   '/admin/screenshots': typeof AdminScreenshotsRoute
   '/admin/seo': typeof AdminSeoRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/site-pages': typeof AdminSitePagesRoute
   '/admin/sports': typeof AdminSportsRoute
   '/admin/support': typeof AdminSupportRoute
   '/admin/theme': typeof AdminThemeRoute
@@ -324,10 +348,12 @@ export interface FileRoutesById {
   '/$slug': typeof SlugRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/built-for-you': typeof BuiltForYouRoute
   '/casino': typeof CasinoRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/games': typeof GamesRouteWithChildren
+  '/how-it-works': typeof HowItWorksRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/responsible-gaming': typeof ResponsibleGamingRoute
   '/sports': typeof SportsRouteWithChildren
@@ -349,6 +375,7 @@ export interface FileRoutesById {
   '/admin/screenshots': typeof AdminScreenshotsRoute
   '/admin/seo': typeof AdminSeoRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/site-pages': typeof AdminSitePagesRoute
   '/admin/sports': typeof AdminSportsRoute
   '/admin/support': typeof AdminSupportRoute
   '/admin/theme': typeof AdminThemeRoute
@@ -366,10 +393,12 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/about'
     | '/admin'
+    | '/built-for-you'
     | '/casino'
     | '/contact'
     | '/faq'
     | '/games'
+    | '/how-it-works'
     | '/privacy-policy'
     | '/responsible-gaming'
     | '/sports'
@@ -391,6 +420,7 @@ export interface FileRouteTypes {
     | '/admin/screenshots'
     | '/admin/seo'
     | '/admin/settings'
+    | '/admin/site-pages'
     | '/admin/sports'
     | '/admin/support'
     | '/admin/theme'
@@ -405,10 +435,12 @@ export interface FileRouteTypes {
     | '/'
     | '/$slug'
     | '/about'
+    | '/built-for-you'
     | '/casino'
     | '/contact'
     | '/faq'
     | '/games'
+    | '/how-it-works'
     | '/privacy-policy'
     | '/responsible-gaming'
     | '/sports'
@@ -430,6 +462,7 @@ export interface FileRouteTypes {
     | '/admin/screenshots'
     | '/admin/seo'
     | '/admin/settings'
+    | '/admin/site-pages'
     | '/admin/sports'
     | '/admin/support'
     | '/admin/theme'
@@ -445,10 +478,12 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/about'
     | '/admin'
+    | '/built-for-you'
     | '/casino'
     | '/contact'
     | '/faq'
     | '/games'
+    | '/how-it-works'
     | '/privacy-policy'
     | '/responsible-gaming'
     | '/sports'
@@ -470,6 +505,7 @@ export interface FileRouteTypes {
     | '/admin/screenshots'
     | '/admin/seo'
     | '/admin/settings'
+    | '/admin/site-pages'
     | '/admin/sports'
     | '/admin/support'
     | '/admin/theme'
@@ -486,10 +522,12 @@ export interface RootRouteChildren {
   SlugRoute: typeof SlugRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
+  BuiltForYouRoute: typeof BuiltForYouRoute
   CasinoRoute: typeof CasinoRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   GamesRoute: typeof GamesRouteWithChildren
+  HowItWorksRoute: typeof HowItWorksRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ResponsibleGamingRoute: typeof ResponsibleGamingRoute
   SportsRoute: typeof SportsRouteWithChildren
@@ -529,6 +567,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/built-for-you': {
+      id: '/built-for-you'
+      path: '/built-for-you'
+      fullPath: '/built-for-you'
+      preLoaderRoute: typeof BuiltForYouRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/casino': {
       id: '/casino'
       path: '/casino'
@@ -555,6 +600,13 @@ declare module '@tanstack/react-router' {
       path: '/games'
       fullPath: '/games'
       preLoaderRoute: typeof GamesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy-policy': {
@@ -711,6 +763,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/site-pages': {
+      id: '/admin/site-pages'
+      path: '/site-pages'
+      fullPath: '/admin/site-pages'
+      preLoaderRoute: typeof AdminSitePagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/sports': {
       id: '/admin/sports'
       path: '/sports'
@@ -788,6 +847,7 @@ interface AdminRouteChildren {
   AdminScreenshotsRoute: typeof AdminScreenshotsRoute
   AdminSeoRoute: typeof AdminSeoRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminSitePagesRoute: typeof AdminSitePagesRoute
   AdminSportsRoute: typeof AdminSportsRoute
   AdminSupportRoute: typeof AdminSupportRoute
   AdminThemeRoute: typeof AdminThemeRoute
@@ -812,6 +872,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminScreenshotsRoute: AdminScreenshotsRoute,
   AdminSeoRoute: AdminSeoRoute,
   AdminSettingsRoute: AdminSettingsRoute,
+  AdminSitePagesRoute: AdminSitePagesRoute,
   AdminSportsRoute: AdminSportsRoute,
   AdminSupportRoute: AdminSupportRoute,
   AdminThemeRoute: AdminThemeRoute,
@@ -846,10 +907,12 @@ const rootRouteChildren: RootRouteChildren = {
   SlugRoute: SlugRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
+  BuiltForYouRoute: BuiltForYouRoute,
   CasinoRoute: CasinoRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   GamesRoute: GamesRouteWithChildren,
+  HowItWorksRoute: HowItWorksRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ResponsibleGamingRoute: ResponsibleGamingRoute,
   SportsRoute: SportsRouteWithChildren,

@@ -13,7 +13,13 @@ export const Route = createFileRoute("/admin/promotions")({
       fields={[
         { name: "title", label: "Title", full: true },
         { name: "short_description", label: "Description", type: "textarea", full: true },
-        { name: "image_url", label: "Image", type: "image" },
+        {
+          name: "image_url",
+          label: "Promotion image",
+          type: "image",
+          desktopSize: "1200 x 675",
+          mobileSize: "800 x 450",
+        },
         { name: "button_text", label: "Button text" },
         { name: "button_url", label: "Button link" },
         { name: "start_date", label: "Start date", type: "date" },

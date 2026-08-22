@@ -23,7 +23,13 @@ export const Route = createFileRoute("/admin/screenshots")({
             { label: "Payment", value: "demo" },
           ],
         },
-        { name: "image_url", label: "Image", type: "image" },
+        {
+          name: "image_url",
+          label: "Screenshot",
+          type: "image",
+          desktopSize: "720 x 1280",
+          mobileSize: "720 x 1280",
+        },
         { name: "description", label: "Description", type: "textarea", full: true },
         { name: "sort_order", label: "Order", type: "number" },
         {

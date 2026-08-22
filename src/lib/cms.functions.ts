@@ -98,29 +98,38 @@ export const fetchSiteChrome = createServerFn({ method: "GET" }).handler(
     footerSettings: CmsRow | null;
     backgroundSettings: CmsRow[];
     navigationItems: CmsRow[];
+    sitePages: CmsRow[];
   }> => {
-  const { requirePublicReadable } = await import("@/server/db/collections");
-  const { findSingleton, listRows } = await import("@/server/db/repository");
+    const { requirePublicReadable } = await import("@/server/db/collections");
+    const { findSingleton, listRows, listRowsBySlug } = await import("@/server/db/repository");
+    const { SITE_PAGE_SLUGS } = await import("@/lib/site-pages");
 
-  const site = requirePublicReadable("site_settings");
-  const theme = requirePublicReadable("theme_settings");
-  const support = requirePublicReadable("support_settings");
-  const footer = requirePublicReadable("footer_settings");
-  const backgrounds = requirePublicReadable("background_settings");
-  const navigation = requirePublicReadable("navigation_items");
+    const site = requirePublicReadable("site_settings");
+    const theme = requirePublicReadable("theme_settings");
+    const support = requirePublicReadable("support_settings");
+    const footer = requirePublicReadable("footer_settings");
+    const backgrounds = requirePublicReadable("background_settings");
+    const navigation = requirePublicReadable("navigation_items");
+    const pages = requirePublicReadable("pages");
 
-  const [siteSettings, themeSettings, supportSettings, footerSettings, backgroundSettings, navigationItems] =
-    await Promise.all([
+    const [
+      siteSettings,
+      themeSettings,
+      supportSettings,
+      footerSettings,
+      backgroundSettings,
+      navigationItems,
+      sitePages,
+    ] = await Promise.all([
       findSingleton(site.name, site.singletonKey!),
       findSingleton(theme.name, theme.singletonKey!),
       findSingleton(support.name, support.singletonKey!),
       findSingleton(footer.name, footer.singletonKey!),
       listRows(backgrounds.name, {}, backgrounds.defaultSort),
-      listRows(
-        navigation.name,
-        { publishedOnly: true },
-        navigation.defaultSort,
-      ),
+      listRows(navigation.name, { publishedOnly: true }, navigation.defaultSort),
+      // Only the fixed built-in pages travel with the chrome, matched in the database. Every
+      // other CMS page is loaded by the route that needs it.
+      listRowsBySlug(pages.name, SITE_PAGE_SLUGS),
     ]);
 
     return {
@@ -130,6 +139,7 @@ export const fetchSiteChrome = createServerFn({ method: "GET" }).handler(
       footerSettings: footerSettings as CmsRow | null,
       backgroundSettings: backgroundSettings as CmsRow[],
       navigationItems: navigationItems as CmsRow[],
+      sitePages: sitePages as CmsRow[],
     };
   },
 );

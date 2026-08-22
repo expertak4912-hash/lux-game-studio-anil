@@ -1,10 +1,12 @@
 import { SectionHeading } from "./SectionHeading";
+import { ResponsiveImage } from "./ResponsiveImage";
 
 export function PageHero({
   eyebrow,
   title,
   description,
   image,
+  mobileImage,
 }: {
   eyebrow: string;
   title: string;
@@ -12,13 +14,16 @@ export function PageHero({
   description?: string;
   /** Optional CMS-managed background image, dimmed behind the heading. */
   image?: string;
+  /** The phone upload for that background. Falls back to `image` when unset. */
+  mobileImage?: string | null;
 }) {
   return (
     <section className="relative isolate overflow-hidden border-b border-border py-16 sm:py-20 lg:py-24">
-      {image && (
+      {(image || mobileImage) && (
         <>
-          <img
+          <ResponsiveImage
             src={image}
+            mobileSrc={mobileImage}
             alt=""
             aria-hidden="true"
             className="absolute inset-0 -z-20 size-full object-cover opacity-25"

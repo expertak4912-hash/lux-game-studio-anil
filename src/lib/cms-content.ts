@@ -97,6 +97,16 @@ export function useBackgrounds() {
     select: (data) => data.backgroundSettings,
   }).data;
 }
+/**
+ * The CMS row for one of the built-in pages in `site-pages.ts`, or null while the admin has not
+ * customised it. Comes from the site chrome, so reading it costs no extra request.
+ */
+export function useSitePage(slug: string) {
+  return useSuspenseQuery({
+    ...siteChromeQuery(),
+    select: (data) => data.sitePages.find((p) => p.slug === slug) ?? null,
+  }).data;
+}
 export function useHomepageSections() {
   return useSuspenseQuery(homepageSectionsQuery()).data;
 }
@@ -144,13 +154,19 @@ export function useSection(slug: string): HomepageSection | null {
   return sections.find((s) => s.slug === slug) ?? null;
 }
 
-/** Background image + overlay for a page area, managed in Admin → Backgrounds. */
+/**
+ * Background image + overlay for a page area, managed in Admin → Backgrounds.
+ *
+ * `mobileImage` is the phone upload; it is null when the admin left that slot empty, and callers
+ * hand both to `ResponsiveImage`, which then serves `image` to every viewport.
+ */
 export function useBackground(slug: string) {
   const rows = useBackgrounds();
   const row = rows.find((r) => r.slug === slug) ?? null;
-  if (!row?.image_url) return null;
+  if (!row?.image_url && !row?.image_url_mobile) return null;
   return {
-    image: row.image_url,
+    image: row.image_url || row.image_url_mobile || "",
+    mobileImage: row.image_url_mobile ?? null,
     color: row.overlay_color || "#000000",
     opacity: typeof row.overlay_opacity === "number" ? row.overlay_opacity : 0.6,
   };

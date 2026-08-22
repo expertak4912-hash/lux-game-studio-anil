@@ -3,6 +3,7 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   BarChart3,
+  BookOpen,
   Image as ImageIcon,
   Files,
   Gamepad2,
@@ -54,6 +55,7 @@ const GROUPS: { group: string; items: { to: string; label: string; icon: typeof 
     {
       group: "Content",
       items: [
+        { to: "/admin/site-pages", label: "Site Pages", icon: BookOpen },
         { to: "/admin/pages", label: "Pages", icon: Files },
         { to: "/admin/games", label: "Games", icon: Gamepad2 },
         { to: "/admin/sports", label: "Sports", icon: Trophy },

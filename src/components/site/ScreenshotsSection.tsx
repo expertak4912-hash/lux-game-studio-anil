@@ -1,5 +1,6 @@
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
+import { ResponsiveImage } from "./ResponsiveImage";
 import { text, useScreenshots, useSection } from "@/lib/cms-content";
 
 /**
@@ -35,10 +36,11 @@ export function ScreenshotsSection({
         {shown.map((shot, i) => (
           <Reveal as="li" key={shot.id} delay={i * 60} className="group">
             <figure className="glass-card overflow-hidden rounded-2xl transition-all duration-500 group-hover:-translate-y-1.5">
-              {shot.image_url && (
+              {(shot.image_url || shot.image_url_mobile) && (
                 <div className="aspect-9/16 overflow-hidden">
-                  <img
+                  <ResponsiveImage
                     src={shot.image_url}
+                    mobileSrc={shot.image_url_mobile}
                     alt={shot.description || shot.title}
                     loading="lazy"
                     className="size-full object-cover transition-transform duration-700 group-hover:scale-110"

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import logoMark from "@/assets/logo-mark.png";
 import { useBrand, useSiteSettings } from "@/lib/cms-content";
+import { ResponsiveImage } from "./ResponsiveImage";
 
 export function Logo({ compact = false }: { compact?: boolean }) {
   const site = useSiteSettings();
@@ -10,8 +11,9 @@ export function Logo({ compact = false }: { compact?: boolean }) {
 
   return (
     <Link to="/" className="group flex min-w-0 items-center gap-2.5" aria-label={`${brand} home`}>
-      <img
+      <ResponsiveImage
         src={site?.logo_url || logoMark}
+        mobileSrc={site?.logo_url_mobile}
         alt={`${brand} emblem`}
         width={40}
         height={40}

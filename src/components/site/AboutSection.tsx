@@ -1,30 +1,33 @@
-import { Check } from "lucide-react";
 import aboutImage from "@/assets/about.jpg";
-import { BRAND } from "@/lib/site";
-import { text, useSection } from "@/lib/cms-content";
+import { text, useSection, useSitePage } from "@/lib/cms-content";
 import { Reveal } from "./Reveal";
+import { ResponsiveImage } from "./ResponsiveImage";
+import { Checklist } from "./SitePageBlocks";
+import { CmsLink } from "./CmsLink";
+import { ArrowRight } from "lucide-react";
+import { parseChecklistItems, resolveSitePage, sitePageDef } from "@/lib/site-pages";
 
-const POINTS = [
-  "Sports entertainment organised by competition and fixture",
-  "Online gaming categories with consistent, readable card layouts",
-  "User-friendly design with generous spacing and clear hierarchy",
-  "Customer support through the channels published on this site",
-  "Mobile accessibility from small phones to large desktops",
-  "Responsible gaming guidance available on every page",
-];
+const def = sitePageDef("about")!;
 
+/** Homepage teaser for `/about`. Heading and checklist are both admin-managed. */
 export function AboutSection() {
   const section = useSection("about");
+  const page = useSitePage(def.slug);
 
   if (section?.enabled === false) return null;
+
+  const resolved = resolveSitePage(def, page);
+  const points =
+    parseChecklistItems(resolved.items) ?? parseChecklistItems(def.defaults.items) ?? [];
 
   return (
     <section id="about" className="section-shell py-20 lg:py-28">
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
         <Reveal>
           <div className="relative overflow-hidden rounded-4xl border border-border">
-            <img
-              src={aboutImage}
+            <ResponsiveImage
+              src={section?.image_url || resolved.image || aboutImage}
+              mobileSrc={section?.image_url_mobile || resolved.imageMobile}
               alt="Dark luxury gaming lounge with gold trim and green accent lighting"
               loading="lazy"
               width={1024}
@@ -39,26 +42,23 @@ export function AboutSection() {
         </Reveal>
 
         <Reveal delay={120} className="space-y-6">
-          <span className="eyebrow">{text(section?.name, `About ${BRAND}`)}</span>
+          <span className="eyebrow">{text(section?.name, def.defaults.eyebrow)}</span>
           <h2 className="text-3xl font-extrabold text-balance sm:text-4xl">
-            {text(section?.heading, "A premium home for sports and gaming entertainment")}
+            <CmsLink url={def.path} className="transition-colors hover:text-primary">
+              {text(section?.heading, resolved.title)}
+            </CmsLink>
           </h2>
           <p className="text-base leading-relaxed text-muted-foreground">
-            {text(
-              section?.description,
-              `${BRAND} brings sports coverage and gaming categories together in one calm, modern interface. Instead of crowded screens and flashing banners, the platform focuses on clear structure, honest descriptions and fast navigation, so you always know exactly where you are.`,
-            )}
+            {text(section?.description, resolved.description)}
           </p>
-          <ul className="grid gap-3">
-            {POINTS.map((point) => (
-              <li key={point} className="flex items-start gap-3 text-sm text-muted-foreground">
-                <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full border border-accent/50 text-accent">
-                  <Check className="size-3" />
-                </span>
-                {point}
-              </li>
-            ))}
-          </ul>
+          <Checklist points={points} />
+          <CmsLink
+            url={def.path}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-primary"
+          >
+            Read more about us
+            <ArrowRight className="size-4" />
+          </CmsLink>
           <p className="text-xs leading-relaxed text-muted-foreground">
             Any real-money features, payments or account systems are offered only where legally
             permitted and appropriately licensed.

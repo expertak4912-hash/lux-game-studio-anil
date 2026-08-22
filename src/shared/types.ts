@@ -51,6 +51,13 @@ export type PublicUser = {
 // collection keyed by `_id`.
 // ---------------------------------------------------------------------------
 
+/**
+ * Image fields come in pairs: `x` is the web/desktop upload and `x_mobile` is the phone upload,
+ * both managed side by side in the admin panel. The site renders `x_mobile` below 768px and falls
+ * back to `x` when the mobile slot is empty, so documents written before the split still render.
+ * Social/OG images and the favicon have no `_mobile` twin — they are consumed at a fixed size.
+ */
+
 export type SettingsKey = "site" | "theme" | "support" | "footer";
 
 export type SiteSettings = {
@@ -59,6 +66,7 @@ export type SiteSettings = {
   tagline: string | null;
   description: string | null;
   logo_url: string | null;
+  logo_url_mobile: string | null;
   favicon_url: string | null;
   whatsapp_url: string | null;
   email: string | null;
@@ -104,6 +112,7 @@ export type SupportSettings = {
 export type FooterSettings = {
   id: string;
   logo_url: string | null;
+  logo_url_mobile: string | null;
   description: string | null;
   footer_links: LinkItem[];
   legal_links: LinkItem[];
@@ -121,6 +130,7 @@ export type BackgroundSetting = Base & {
   slug: string;
   label: string;
   image_url: string | null;
+  image_url_mobile: string | null;
   overlay_color: string;
   overlay_opacity: number;
 };
@@ -132,6 +142,7 @@ export type HomepageSection = Base & {
   heading: string | null;
   description: string | null;
   image_url: string | null;
+  image_url_mobile: string | null;
   button_text: string | null;
   button_url: string | null;
   sort_order: number;
@@ -141,6 +152,7 @@ export type HeroSlide = Base & {
   title: string;
   description: string | null;
   image_url: string | null;
+  image_url_mobile: string | null;
   button_text: string | null;
   button_url: string | null;
   sort_order: number;
@@ -158,8 +170,18 @@ export type PageBlock = {
 export type PageRow = Base & {
   title: string;
   slug: string;
+  /** Small label rendered above the page title. Used by the built-in pages in `site-pages.ts`. */
+  eyebrow?: string | null;
+  /**
+   * Structured cards for a built-in page — legal blocks, How It Works steps, Built For You
+   * feature cards or About checklist lines. Edited as raw JSON in Admin → Site Pages, so readers
+   * parse defensively (see `parse*Items` in `src/lib/site-pages.ts`).
+   */
+  items?: Json | null;
   featured_image: string | null;
+  featured_image_mobile: string | null;
   background_image: string | null;
+  background_image_mobile: string | null;
   short_description: string | null;
   content: string | null;
   seo_title: string | null;
@@ -178,7 +200,9 @@ export type GameRow = Base & {
   slug: string;
   short_description: string | null;
   featured_image: string | null;
+  featured_image_mobile: string | null;
   background_image: string | null;
+  background_image_mobile: string | null;
   content: string | null;
   button_text: string | null;
   tag: string | null;
@@ -194,7 +218,9 @@ export type SportRow = Base & {
   slug: string;
   icon: string | null;
   image_url: string | null;
+  image_url_mobile: string | null;
   background_image: string | null;
+  background_image_mobile: string | null;
   description: string | null;
   content: string | null;
   url: string | null;
@@ -216,6 +242,7 @@ export type BlogPost = Base & {
   title: string;
   slug: string;
   featured_image: string | null;
+  featured_image_mobile: string | null;
   excerpt: string | null;
   content: string | null;
   author: string | null;
@@ -233,7 +260,9 @@ export type BlogPost = Base & {
 export type AvailableSite = Base & {
   name: string;
   logo_url: string | null;
+  logo_url_mobile: string | null;
   image_url: string | null;
+  image_url_mobile: string | null;
   description: string | null;
   category: string | null;
   button_text: string | null;
@@ -245,6 +274,7 @@ export type AvailableSite = Base & {
 export type Screenshot = Base & {
   title: string;
   image_url: string | null;
+  image_url_mobile: string | null;
   description: string | null;
   category: string;
   sort_order: number;
@@ -254,6 +284,7 @@ export type Screenshot = Base & {
 export type Promotion = Base & {
   title: string;
   image_url: string | null;
+  image_url_mobile: string | null;
   short_description: string | null;
   button_text: string | null;
   button_url: string | null;

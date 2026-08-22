@@ -20,8 +20,20 @@ export const Route = createFileRoute("/admin/games")({
         { name: "tag", label: "Tag" },
         { name: "sort_order", label: "Order", type: "number" },
         { name: "short_description", label: "Short description", type: "textarea", full: true },
-        { name: "featured_image", label: "Card image", type: "image" },
-        { name: "background_image", label: "Page background", type: "image" },
+        {
+          name: "featured_image",
+          label: "Card image",
+          type: "image",
+          desktopSize: "800 x 800",
+          mobileSize: "600 x 600",
+        },
+        {
+          name: "background_image",
+          label: "Page background",
+          type: "image",
+          desktopSize: "1920 x 1080",
+          mobileSize: "800 x 1200",
+        },
         { name: "content", label: "Page content", type: "richtext" },
         { name: "button_text", label: "Button text" },
         {
@@ -35,7 +47,13 @@ export const Route = createFileRoute("/admin/games")({
         },
         { name: "seo_title", label: "SEO title" },
         { name: "seo_description", label: "Meta description", type: "textarea" },
-        { name: "seo_image", label: "Social image", type: "image" },
+        {
+          name: "seo_image",
+          label: "Social image",
+          type: "image",
+          desktopSize: "1200 x 630",
+          mobile: false,
+        },
       ]}
     />
   ),

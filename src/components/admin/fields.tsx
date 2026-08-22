@@ -1,5 +1,15 @@
 import { useRef, useState } from "react";
-import { Bold, Italic, Link2, List, Loader2, Upload, Heading2 } from "lucide-react";
+import {
+  Bold,
+  Italic,
+  Link2,
+  List,
+  Loader2,
+  Monitor,
+  Smartphone,
+  Upload,
+  Heading2,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -7,6 +17,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { uploadMedia } from "@/lib/admin-db";
+import { hasMobileSlot, mobileFieldName } from "./field-keys";
 import {
   Select,
   SelectContent,
@@ -36,28 +47,55 @@ export type Field = {
   placeholder?: string;
   help?: string;
   full?: boolean;
+  /**
+   * Recommended pixel size for the desktop/web upload, e.g. "1920 x 1080". Shown in the input
+   * placeholder, beside the slot title and under the uploader.
+   */
+  desktopSize?: string;
+  /** Recommended pixel size for the mobile upload. */
+  mobileSize?: string;
+  /**
+   * Set to false on image fields that have no mobile variant — favicons and social/OG images,
+   * which browsers and social networks render at one fixed size.
+   */
+  mobile?: boolean;
 };
 
-export function ImageField({
+function UploadSlot({
+  title,
+  icon,
+  size,
   value,
   onChange,
-  label,
+  previewClassName,
 }: {
+  title: string;
+  icon: React.ReactNode;
+  size?: string;
   value: string;
   onChange: (v: string) => void;
-  label: string;
+  previewClassName: string;
 }) {
   const [busy, setBusy] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="space-y-2">
-      <Label>{label}</Label>
+    <div className="space-y-2 rounded-lg border border-border bg-background/40 p-3">
+      <div className="flex items-center gap-2 text-xs font-semibold tracking-wide uppercase">
+        {icon}
+        {title}
+        {size && (
+          <span className="ml-auto font-mono text-[0.65rem] normal-case text-muted-foreground">
+            {size} px
+          </span>
+        )}
+      </div>
+
       <div className="flex flex-wrap items-center gap-2">
         <Input
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="https://... or upload"
+          placeholder={size ? `${size} px — paste a URL or upload` : "https://... or upload"}
           className="min-w-0 flex-1"
         />
         <input
@@ -71,7 +109,7 @@ export function ImageField({
             setBusy(true);
             try {
               onChange(await uploadMedia(file, "uploads"));
-              toast.success("Image uploaded");
+              toast.success(`${title} image uploaded`);
             } catch (error) {
               toast.error((error as Error).message);
             } finally {
@@ -91,13 +129,88 @@ export function ImageField({
           Upload
         </Button>
       </div>
-      {value && (
+
+      {size && (
+        <p className="text-xs text-muted-foreground">
+          Recommended size <strong className="font-semibold text-foreground">{size} px</strong> —
+          JPG, PNG or WebP.
+        </p>
+      )}
+
+      {value ? (
         <img
           src={value}
-          alt="Selected media preview"
-          className="h-24 w-40 rounded-md border border-border object-cover"
+          alt={`${title} preview`}
+          className={`rounded-md border border-border object-cover ${previewClassName}`}
         />
+      ) : (
+        <div
+          className={`grid place-items-center rounded-md border border-dashed border-border text-center text-[0.65rem] text-muted-foreground ${previewClassName}`}
+        >
+          {size ? `${size} px` : "No image"}
+        </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * Image picker with separate desktop and mobile uploads.
+ *
+ * The desktop file is what laptops and desktops load; the mobile file is what phones load.
+ * Leaving the mobile slot empty is fine — the site falls back to the desktop file.
+ */
+export function ImageField({
+  value,
+  onChange,
+  label,
+  mobileValue,
+  onMobileChange,
+  desktopSize,
+  mobileSize,
+  help,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  label: string;
+  /** Omit `onMobileChange` to render a single (desktop-only) uploader. */
+  mobileValue?: string;
+  onMobileChange?: (v: string) => void;
+  desktopSize?: string;
+  mobileSize?: string;
+  help?: string;
+}) {
+  const showMobile = typeof onMobileChange === "function";
+
+  return (
+    <div className="space-y-2">
+      <Label>{label}</Label>
+      <div className={showMobile ? "grid gap-3 md:grid-cols-2" : "grid gap-3"}>
+        <UploadSlot
+          title={showMobile ? "Web / Desktop view" : "Image"}
+          icon={<Monitor className="size-3.5 text-primary" />}
+          {...(desktopSize ? { size: desktopSize } : {})}
+          value={value}
+          onChange={onChange}
+          previewClassName="h-24 w-40"
+        />
+        {showMobile && (
+          <UploadSlot
+            title="Mobile view"
+            icon={<Smartphone className="size-3.5 text-accent" />}
+            {...(mobileSize ? { size: mobileSize } : {})}
+            value={mobileValue ?? ""}
+            onChange={onMobileChange}
+            previewClassName="h-32 w-24"
+          />
+        )}
+      </div>
+      <p className="text-xs text-muted-foreground">
+        {help ??
+          (showMobile
+            ? "Screens 768px and wider load the web image; phones load the mobile image. Leave the mobile slot empty to reuse the web image everywhere."
+            : "Rendered at one fixed size by browsers and social networks, so it has no separate mobile version.")}
+      </p>
     </div>
   );
 }
@@ -161,16 +274,43 @@ export function FieldInput({
   field,
   value,
   onChange,
+  row,
+  setField,
 }: {
   field: Field;
   value: unknown;
   onChange: (v: unknown) => void;
+  /**
+   * The whole record being edited. Only image fields need it, to read the `_mobile` companion
+   * stored beside the field's own key.
+   */
+  row?: Record<string, unknown> | undefined;
+  /** Writes any key on the record. Required for the mobile upload slot to save. */
+  setField?: ((name: string, value: unknown) => void) | undefined;
 }) {
   const type = field.type ?? "text";
   const str = value == null ? "" : String(value);
 
   if (type === "image") {
-    return <ImageField label={field.label} value={str} onChange={onChange} />;
+    const mobileKey = mobileFieldName(field.name);
+    const setMobile = setField;
+    const mobileEnabled = hasMobileSlot(field) && typeof setMobile === "function";
+    return (
+      <ImageField
+        label={field.label}
+        value={str}
+        onChange={onChange}
+        {...(field.desktopSize ? { desktopSize: field.desktopSize } : {})}
+        {...(field.mobileSize ? { mobileSize: field.mobileSize } : {})}
+        {...(field.help ? { help: field.help } : {})}
+        {...(mobileEnabled && setMobile
+          ? {
+              mobileValue: row?.[mobileKey] == null ? "" : String(row[mobileKey]),
+              onMobileChange: (v: string) => setMobile(mobileKey, v),
+            }
+          : {})}
+      />
+    );
   }
   if (type === "richtext") {
     return <RichText label={field.label} value={str} onChange={onChange} />;

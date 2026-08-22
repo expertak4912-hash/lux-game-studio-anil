@@ -4,6 +4,7 @@ import { CmsContent } from "@/components/site/CmsContent";
 import { PageBlocks } from "@/components/site/PageBlocks";
 import { Reveal } from "@/components/site/Reveal";
 import { gameBySlugQuery, pageBySlugQuery, sportBySlugQuery } from "@/lib/cms-queries";
+import { pickImagePair } from "@/lib/image-pair";
 import type { GameRow, PageRow, SportRow } from "@/shared/types";
 
 /**
@@ -78,12 +79,17 @@ function CatchAllPage() {
 
   if (resolved.kind === "sport") {
     const { sport } = resolved;
+    const hero = pickImagePair(
+      [sport.background_image, sport.background_image_mobile],
+      [sport.image_url, sport.image_url_mobile],
+    );
     return (
       <SimpleEntityPage
         eyebrow="Sports"
         title={sport.name}
         description={sport.description}
-        image={sport.background_image ?? sport.image_url}
+        image={hero.src}
+        mobileImage={hero.mobileSrc}
         content={sport.content}
       />
     );
@@ -91,12 +97,17 @@ function CatchAllPage() {
 
   if (resolved.kind === "game") {
     const { game } = resolved;
+    const hero = pickImagePair(
+      [game.background_image, game.background_image_mobile],
+      [game.featured_image, game.featured_image_mobile],
+    );
     return (
       <SimpleEntityPage
         eyebrow={game.tag || "Games"}
         title={game.name}
         description={game.short_description}
-        image={game.background_image ?? game.featured_image}
+        image={hero.src}
+        mobileImage={hero.mobileSrc}
         content={game.content}
       />
     );
@@ -111,6 +122,7 @@ function CatchAllPage() {
         title={page.title}
         {...(page.short_description ? { description: page.short_description } : {})}
         {...(page.background_image ? { image: page.background_image } : {})}
+        mobileImage={page.background_image_mobile}
       />
 
       {page.content && (
@@ -136,12 +148,14 @@ function SimpleEntityPage({
   title,
   description,
   image,
+  mobileImage,
   content,
 }: {
   eyebrow: string;
   title: string;
   description: string | null;
   image: string | null;
+  mobileImage: string | null;
   content: string | null;
 }) {
   return (
@@ -151,6 +165,7 @@ function SimpleEntityPage({
         title={title}
         {...(description ? { description } : {})}
         {...(image ? { image } : {})}
+        mobileImage={mobileImage}
       />
       {content && (
         <section className="section-shell py-16 lg:py-24">

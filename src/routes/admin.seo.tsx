@@ -20,7 +20,13 @@ export const Route = createFileRoute("/admin/seo")({
         { name: "meta_description", label: "Meta description", type: "textarea", full: true },
         { name: "keywords", label: "Keywords" },
         { name: "canonical_url", label: "Canonical URL" },
-        { name: "og_image", label: "Social image", type: "image" },
+        {
+          name: "og_image",
+          label: "Social image",
+          type: "image",
+          desktopSize: "1200 x 630",
+          mobile: false,
+        },
       ]}
     />
   ),

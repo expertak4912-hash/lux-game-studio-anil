@@ -3,6 +3,8 @@ import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "./WhatsAppButton";
 import { CmsLink } from "./CmsLink";
+import { ResponsiveImage } from "./ResponsiveImage";
+import { pickImagePair } from "@/lib/image-pair";
 import { HERO_FALLBACK_IMAGE, useBackground, useHeroSlides, useSection } from "@/lib/cms-content";
 
 const PARTICLES = [
@@ -20,6 +22,7 @@ const DEFAULT_SLIDE = {
   description:
     "Explore a modern sports and gaming entertainment platform designed for a smooth experience across desktop and mobile devices.",
   image_url: null as string | null,
+  image_url_mobile: null as string | null,
   button_text: "Explore Games",
   button_url: "/games",
 };
@@ -35,6 +38,7 @@ export function Hero() {
           title: s.title,
           description: s.description,
           image_url: s.image_url,
+          image_url_mobile: s.image_url_mobile,
           button_text: s.button_text,
           button_url: s.button_url,
         }))
@@ -48,13 +52,20 @@ export function Hero() {
   }, [slides.length]);
 
   const slide = slides[Math.min(index, slides.length - 1)]!;
-  const image = slide.image_url || background?.image || HERO_FALLBACK_IMAGE;
+  // Slide art first, then the Admin → Backgrounds row, then the bundled fallback — taken a
+  // desktop/mobile pair at a time so the two halves always come from the same source.
+  const hero = pickImagePair(
+    [slide.image_url, slide.image_url_mobile],
+    [background?.image, background?.mobileImage],
+    [HERO_FALLBACK_IMAGE, null],
+  );
 
   return (
     <section className="relative isolate flex min-h-[92vh] items-center overflow-hidden">
-      <img
-        key={image}
-        src={image}
+      <ResponsiveImage
+        key={`${hero.src ?? ""}|${hero.mobileSrc ?? ""}`}
+        src={hero.src}
+        mobileSrc={hero.mobileSrc}
         alt={slide.title}
         width={1920}
         height={1088}

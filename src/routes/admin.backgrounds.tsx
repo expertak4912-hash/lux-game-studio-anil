@@ -17,7 +17,13 @@ export const Route = createFileRoute("/admin/backgrounds")({
       fields={[
         { name: "label", label: "Area name" },
         { name: "slug", label: "Key" },
-        { name: "image_url", label: "Background image", type: "image" },
+        {
+          name: "image_url",
+          label: "Background image",
+          type: "image",
+          desktopSize: "1920 x 1080",
+          mobileSize: "800 x 1400",
+        },
         { name: "overlay_color", label: "Overlay colour", type: "color" },
         { name: "overlay_opacity", label: "Overlay opacity (0-1)", type: "number" },
       ]}

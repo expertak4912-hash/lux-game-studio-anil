@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import { CmsLink } from "./CmsLink";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
+import { ResponsiveImage } from "./ResponsiveImage";
 import { gameImage, text, useGames, useSection } from "@/lib/cms-content";
 
 export function GamesSection({
@@ -42,8 +43,9 @@ export function GamesSection({
             <Reveal as="li" key={game.id} delay={i * 70} className="group">
               <article className="glass-card relative flex h-full flex-col overflow-hidden rounded-3xl transition-all duration-500 group-hover:-translate-y-2 group-hover:neon-green">
                 <div className="relative aspect-square overflow-hidden">
-                  <img
+                  <ResponsiveImage
                     src={gameImage(game.slug, game.featured_image)}
+                    mobileSrc={game.featured_image_mobile}
                     alt={`${game.name} game artwork`}
                     loading="lazy"
                     width={640}

@@ -8,7 +8,13 @@ export const Route = createFileRoute("/admin/footer")({
       description="Footer text, links and legal links."
       table="footer_settings"
       fields={[
-        { name: "logo_url", label: "Footer logo", type: "image" },
+        {
+          name: "logo_url",
+          label: "Footer logo",
+          type: "image",
+          desktopSize: "256 x 256",
+          mobileSize: "128 x 128",
+        },
         { name: "description", label: "Footer text", type: "textarea", full: true },
         { name: "contact_info", label: "Contact info", type: "textarea", full: true },
         { name: "copyright_text", label: "Copyright text", full: true },

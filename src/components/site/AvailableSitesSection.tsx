@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import { CmsLink } from "./CmsLink";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
+import { ResponsiveImage } from "./ResponsiveImage";
 import { text, useAvailableSites, useSection } from "@/lib/cms-content";
 
 /** Renders Admin -> Available Sites. */
@@ -29,14 +30,13 @@ export function AvailableSitesSection() {
             <Reveal as="li" key={site.id} delay={i * 70} className="group">
               <article className="glass-card flex h-full flex-col gap-3 rounded-3xl p-6 transition-all duration-500 group-hover:-translate-y-2">
                 <div className="flex items-center gap-3">
-                  {site.logo_url && (
-                    <img
-                      src={site.logo_url}
-                      alt=""
-                      loading="lazy"
-                      className="size-11 rounded-xl border border-border object-cover"
-                    />
-                  )}
+                  <ResponsiveImage
+                    src={site.logo_url}
+                    mobileSrc={site.logo_url_mobile}
+                    alt=""
+                    loading="lazy"
+                    className="size-11 rounded-xl border border-border object-cover"
+                  />
                   <div className="min-w-0">
                     <h3 className="truncate font-display text-lg font-bold">{site.name}</h3>
                     {site.category && (

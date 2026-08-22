@@ -1,29 +1,26 @@
 import { SectionHeading } from "./SectionHeading";
-import { Reveal } from "./Reveal";
-import { text, useSection } from "@/lib/cms-content";
+import { StepsGrid } from "./SitePageBlocks";
+import { text, useSection, useSitePage } from "@/lib/cms-content";
+import { parseStepItems, resolveSitePage, sitePageDef, type StepItem } from "@/lib/site-pages";
 
-const STEPS = [
-  {
-    n: "01",
-    title: "Create an Account",
-    body: "Register with your details where the service is legally available, and confirm you meet the age and eligibility rules.",
-  },
-  {
-    n: "02",
-    title: "Explore Available Games",
-    body: "Browse the sports hub and the gaming grid, then open any category to see what it offers.",
-  },
-  {
-    n: "03",
-    title: "Enjoy Responsibly",
-    body: "Set your own limits, treat every session as entertainment, and reach support whenever you need help.",
-  },
-];
+const def = sitePageDef("how-it-works")!;
 
+/**
+ * Homepage teaser for `/how-it-works`.
+ *
+ * The heading text comes from Admin → Homepage Sections (as it always has); the step cards come
+ * from Admin → Site Pages, the same rows the dedicated page reads, so the two never drift.
+ */
 export function HowItWorks() {
   const section = useSection("how_it_works");
+  const page = useSitePage(def.slug);
 
   if (section?.enabled === false) return null;
+
+  const resolved = resolveSitePage(def, page);
+  const steps = (parseStepItems(resolved.items) ??
+    parseStepItems(def.defaults.items) ??
+    []) as StepItem[];
 
   return (
     <section className="relative isolate overflow-hidden py-20 lg:py-28">
@@ -33,32 +30,13 @@ export function HowItWorks() {
       />
       <div className="section-shell">
         <SectionHeading
-          eyebrow={text(section?.name, "How It Works")}
-          title={text(section?.heading, "Three steps to get going")}
-          description={text(
-            section?.description,
-            "A short, transparent path from registration to responsible play.",
-          )}
+          eyebrow={text(section?.name, def.defaults.eyebrow)}
+          title={text(section?.heading, resolved.title)}
+          description={text(section?.description, resolved.description)}
+          href={def.path}
+          linkLabel="See how it works"
         />
-        <ol className="mt-12 grid gap-6 lg:grid-cols-3">
-          {STEPS.map((step, i) => (
-            <Reveal as="li" key={step.n} delay={i * 120} className="group">
-              <div className="glass-card relative h-full overflow-hidden rounded-3xl p-8 transition-all duration-500 group-hover:-translate-y-2 group-hover:neon-green">
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -top-6 right-3 font-display text-7xl font-extrabold text-primary/15 transition-colors duration-500 group-hover:text-primary/25 sm:text-8xl"
-                >
-                  {step.n}
-                </span>
-                <p className="font-display text-sm font-bold tracking-[0.3em] text-accent">
-                  {step.n}
-                </p>
-                <h3 className="mt-4 font-display text-xl font-bold">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{step.body}</p>
-              </div>
-            </Reveal>
-          ))}
-        </ol>
+        <StepsGrid steps={steps} />
       </div>
     </section>
   );

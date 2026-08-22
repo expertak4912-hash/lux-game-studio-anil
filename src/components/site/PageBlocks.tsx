@@ -2,6 +2,7 @@ import { CmsLink } from "./CmsLink";
 import { CmsContent } from "./CmsContent";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
+import { ResponsiveImage } from "./ResponsiveImage";
 import { Button } from "@/components/ui/button";
 import type { PageBlock } from "@/shared/types";
 
@@ -64,12 +65,14 @@ function Block({ block, index }: { block: PageBlock; index: number }) {
       );
 
     case "image":
-      return str(data, "url") ? (
+      // `url` is the web/desktop file; `url_mobile` is the optional phone file.
+      return str(data, "url") || str(data, "url_mobile") ? (
         <section className="section-shell py-10">
           <Reveal delay={index * 60}>
             <figure className="glass-card overflow-hidden rounded-3xl">
-              <img
+              <ResponsiveImage
                 src={str(data, "url")}
+                mobileSrc={str(data, "url_mobile")}
                 alt={str(data, "alt")}
                 loading="lazy"
                 className="size-full object-cover"

@@ -108,6 +108,23 @@ export async function findRow(table: TableName, opts: ListOptions = {}): Promise
   return serializeDoc(doc as Row | null);
 }
 
+/**
+ * Reads the published rows whose `slug` is in `slugs`.
+ *
+ * Used for the fixed set of built-in site pages. `listRows` would pull the whole `pages`
+ * collection and filter in memory, which grows with every page an admin adds; this keeps the
+ * match in the database. The slug list comes from application constants, never from a request.
+ */
+export async function listRowsBySlug(table: TableName, slugs: string[]): Promise<Row[]> {
+  if (slugs.length === 0) return [];
+  const collection = await collectionFor(table);
+  const docs = await collection
+    .find({ slug: { $in: slugs }, status: "published" })
+    .limit(slugs.length)
+    .toArray();
+  return serializeDocs(docs as Row[]);
+}
+
 export async function findRowById(table: TableName, id: string): Promise<Row | null> {
   const collection = await collectionFor(table);
   const doc = await collection.findOne({ _id: toId(id) as never });

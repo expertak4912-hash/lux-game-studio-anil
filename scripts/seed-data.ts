@@ -128,7 +128,7 @@ export const HOMEPAGE_SECTIONS = [
   ["promotions", "Promotions", "Promotions", "Current featured content.", 12],
   [
     "about",
-    "About STRIKE ARENA",
+    "About",
     "A premium home for sports and gaming entertainment",
     "Strike Arena brings sports coverage and gaming categories together in one calm, modern interface.",
     13,

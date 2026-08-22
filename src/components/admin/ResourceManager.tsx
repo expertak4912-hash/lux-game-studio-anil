@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { FieldInput, type Field } from "./fields";
+import { fieldNames } from "./field-keys";
 import { useAdminRows, useDeleteRow, useSaveRow } from "@/lib/admin-db";
 
 type Row = Record<string, unknown>;
@@ -74,6 +75,9 @@ export function ResourceManager(config: ResourceConfig) {
   const blank = useMemo<Row>(() => {
     const base: Row = { ...defaults };
     for (const f of fields) if (!(f.name in base)) base[f.name] = f.type === "switch" ? true : "";
+    // The `_mobile` companion of every image field needs a blank too, or a new row would post it
+    // as `undefined` and Mongo would leave the key out entirely.
+    for (const name of fieldNames(fields)) if (!(name in base)) base[name] = "";
     return base;
   }, [defaults, fields]);
 
@@ -90,6 +94,10 @@ export function ResourceManager(config: ResourceConfig) {
     const payload: Row = { ...editing };
     for (const f of fields) {
       if (payload[f.name] === "") payload[f.name] = f.type === "number" ? 0 : null;
+    }
+    // Clearing a mobile upload stores null, matching how the desktop slot clears.
+    for (const name of fieldNames(fields)) {
+      if (payload[name] === "") payload[name] = null;
     }
     save.mutate(payload, { onSuccess: () => setEditing(null) });
   };
@@ -219,8 +227,19 @@ export function ResourceManager(config: ResourceConfig) {
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
             {fields.map((f) => (
-              <div key={f.name} className={f.full || f.type === "richtext" ? "sm:col-span-2" : ""}>
-                <FieldInput field={f} value={editing?.[f.name]} onChange={(v) => set(f.name, v)} />
+              <div
+                key={f.name}
+                className={
+                  f.full || f.type === "richtext" || f.type === "image" ? "sm:col-span-2" : ""
+                }
+              >
+                <FieldInput
+                  field={f}
+                  value={editing?.[f.name]}
+                  onChange={(v) => set(f.name, v)}
+                  row={editing ?? undefined}
+                  setField={set}
+                />
               </div>
             ))}
           </div>

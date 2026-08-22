@@ -3,9 +3,9 @@ import { SitePageView } from "@/components/site/SitePageView";
 import { siteChromeQuery } from "@/lib/cms-queries";
 import { sitePageDef, sitePageHead, type SitePageRow } from "@/lib/site-pages";
 
-const def = sitePageDef("terms")!;
+const def = sitePageDef("how-it-works")!;
 
-export const Route = createFileRoute("/terms")({
+export const Route = createFileRoute("/how-it-works")({
   // The built-in pages travel with the site chrome, so this reads from cache rather than firing
   // another request. It is here only so `head` can use the admin's own title and description.
   loader: async ({ context }) => {
@@ -15,5 +15,5 @@ export const Route = createFileRoute("/terms")({
     };
   },
   head: ({ loaderData }) => sitePageHead(def, loaderData?.page ?? null),
-  component: () => <SitePageView slug="terms" />,
+  component: () => <SitePageView slug="how-it-works" />,
 });

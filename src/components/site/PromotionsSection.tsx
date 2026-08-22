@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import { CmsLink } from "./CmsLink";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
+import { ResponsiveImage } from "./ResponsiveImage";
 import { text, usePromotions, useSection } from "@/lib/cms-content";
 
 /**
@@ -36,10 +37,11 @@ export function PromotionsSection() {
         {live.map((promo, i) => (
           <Reveal as="li" key={promo.id} delay={i * 70} className="group">
             <article className="glass-card flex h-full flex-col overflow-hidden rounded-3xl transition-all duration-500 group-hover:-translate-y-2">
-              {promo.image_url && (
+              {(promo.image_url || promo.image_url_mobile) && (
                 <div className="relative aspect-video overflow-hidden">
-                  <img
+                  <ResponsiveImage
                     src={promo.image_url}
+                    mobileSrc={promo.image_url_mobile}
                     alt={promo.title}
                     loading="lazy"
                     className="size-full object-cover transition-transform duration-700 group-hover:scale-110"

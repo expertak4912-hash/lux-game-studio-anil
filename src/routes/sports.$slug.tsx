@@ -3,8 +3,10 @@ import { ArrowLeft } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { CmsContent } from "@/components/site/CmsContent";
 import { Reveal } from "@/components/site/Reveal";
+import { ResponsiveImage } from "@/components/site/ResponsiveImage";
 import { sportBySlugQuery } from "@/lib/cms-queries";
 import { sportImage } from "@/lib/cms-content";
+import { pickImagePair } from "@/lib/image-pair";
 
 export const Route = createFileRoute("/sports/$slug")({
   loader: async ({ context, params }) => {
@@ -39,13 +41,19 @@ export const Route = createFileRoute("/sports/$slug")({
 function SportDetail() {
   const { sport } = Route.useLoaderData();
 
+  const hero = pickImagePair(
+    [sport.background_image, sport.background_image_mobile],
+    [sportImage(sport.slug, sport.image_url), sport.image_url_mobile],
+  );
+
   return (
     <>
       <PageHero
         eyebrow="Sports"
         title={sport.name}
         {...(sport.description ? { description: sport.description } : {})}
-        image={sport.background_image ?? sportImage(sport.slug, sport.image_url)}
+        {...(hero.src ? { image: hero.src } : {})}
+        mobileImage={hero.mobileSrc}
       />
 
       <section className="section-shell py-16 lg:py-24">
@@ -61,8 +69,9 @@ function SportDetail() {
           <Reveal>
             <article className="glass-card mt-6 overflow-hidden rounded-3xl">
               <div className="aspect-video overflow-hidden">
-                <img
+                <ResponsiveImage
                   src={sportImage(sport.slug, sport.image_url)}
+                  mobileSrc={sport.image_url_mobile}
                   alt={`${sport.name} coverage`}
                   className="size-full object-cover"
                 />

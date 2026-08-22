@@ -59,6 +59,7 @@ function BlogPostPage() {
         title={post.title}
         {...(post.excerpt ? { description: post.excerpt } : {})}
         {...(post.featured_image ? { image: post.featured_image } : {})}
+        mobileImage={post.featured_image_mobile}
       />
 
       <section className="section-shell py-16 lg:py-24">

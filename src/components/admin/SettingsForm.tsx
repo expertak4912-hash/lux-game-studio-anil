@@ -21,6 +21,9 @@ export function SettingsForm({
   const save = useSaveSettings(table);
   const [values, setValues] = useState<Row>({});
 
+  const setField = (name: string, value: unknown) =>
+    setValues((prev) => ({ ...prev, [name]: value }));
+
   useEffect(() => {
     if (data) setValues(data);
   }, [data]);
@@ -42,11 +45,16 @@ export function SettingsForm({
 
       <div className="grid gap-4 rounded-xl border border-border bg-card p-5 sm:grid-cols-2">
         {fields.map((f) => (
-          <div key={f.name} className={f.full || f.type === "richtext" ? "sm:col-span-2" : ""}>
+          <div
+            key={f.name}
+            className={f.full || f.type === "richtext" || f.type === "image" ? "sm:col-span-2" : ""}
+          >
             <FieldInput
               field={f}
               value={values[f.name]}
               onChange={(v) => setValues((prev) => ({ ...prev, [f.name]: v }))}
+              row={values}
+              setField={setField}
             />
           </div>
         ))}
