@@ -4,8 +4,8 @@ import { text, useScreenshots, useSection } from "@/lib/cms-content";
 
 /**
  * Renders Admin -> Screenshots. The `category` field splits the same collection between the two
- * seeded sections ("screenshots" for payment demos, "platform_screenshots" for platform screens),
- * so one admin screen feeds both placements.
+ * The category field lets the payment screenshot gallery use the same admin collection as other
+ * screenshot records.
  */
 export function ScreenshotsSection({
   category,

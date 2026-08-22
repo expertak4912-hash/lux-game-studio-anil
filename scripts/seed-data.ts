@@ -126,7 +126,14 @@ export const HOMEPAGE_SECTIONS = [
     11,
   ],
   ["promotions", "Promotions", "Promotions", "Current featured content.", 12],
-  ["why_us", "Why Choose Us", "Why Choose Us", "Fast, clean and mobile friendly.", 13],
+  [
+    "about",
+    "About STRIKE ARENA",
+    "A premium home for sports and gaming entertainment",
+    "Strike Arena brings sports coverage and gaming categories together in one calm, modern interface.",
+    13,
+  ],
+  ["why_us", "Built For You", "Built For You", "Fast, clean and mobile friendly.", 13],
   ["mobile", "Mobile Section", "Built For Mobile", "Works well on every phone.", 14],
   ["support", "Customer Support", "Need Help?", "Talk to our team on WhatsApp.", 15],
   ["faq", "FAQ", "Common Questions", "Short answers to popular questions.", 16],
@@ -331,6 +338,29 @@ export const PAGES = [
       "<p>Coverage and availability can differ by region. 18+ only — play responsibly.</p>",
     sort_order: 3,
   },
+  {
+    title: "Privacy Policy",
+    slug: "privacy-policy",
+    short_description: "How information submitted through this website is handled.",
+    content:
+      "<h2>What this policy covers</h2><p>This policy explains how information submitted through this website is handled. It applies to the contact form and to messages you start through the published WhatsApp support channel.</p>" +
+      "<h2>Information we collect</h2><p>We only collect what you choose to send us: your name, email address, optional phone number, message content and basic technical information your browser sends with any web request.</p>" +
+      "<h2>How it is used</h2><p>Contact details are used to answer your question and keep a record of the conversation. We do not sell your information or use it for unrelated marketing without your consent.</p>" +
+      "<h2>Your choices</h2><p>You can ask us to correct or delete the details you have sent by contacting support. Please avoid sending sensitive information such as identity documents or payment data through the contact form.</p>",
+    sort_order: 4,
+  },
+  {
+    title: "Terms & Conditions",
+    slug: "terms",
+    short_description: "The terms that govern use of the Strike Arena website.",
+    content:
+      "<h2>Acceptance of these terms</h2><p>By using this website you agree to these terms. If you do not agree with any part of them, please stop using the site.</p>" +
+      "<h2>Eligibility</h2><p>You must be an adult of legal age in your jurisdiction and located somewhere this service is legally permitted.</p>" +
+      "<h2>Acceptable use</h2><p>Do not provide false information, disrupt the site, attempt unauthorised access, or copy and republish site content without permission.</p>" +
+      "<h2>Availability and content</h2><p>Features, categories and pages may change, be limited by region, or be withdrawn. Content is provided for general information and entertainment and makes no promise of any particular outcome.</p>" +
+      "<h2>Changes and contact</h2><p>These terms may be updated from time to time. For questions, use the contact form or the WhatsApp support button.</p>",
+    sort_order: 5,
+  },
 ].map((row) => ({
   ...row,
   featured_image: null,
@@ -373,19 +403,19 @@ export const SCREENSHOTS = [
   {
     title: "Home Screen",
     description: "The homepage on a phone.",
-    category: "platform",
+    category: "demo",
     sort_order: 1,
   },
   {
     title: "Sports List",
     description: "Browsing sports categories.",
-    category: "platform",
+    category: "demo",
     sort_order: 2,
   },
   {
     title: "Games Grid",
     description: "The games grid on mobile.",
-    category: "platform",
+    category: "demo",
     sort_order: 3,
   },
 ].map((row) => ({ ...row, image_url: null, status: "published" as const }));

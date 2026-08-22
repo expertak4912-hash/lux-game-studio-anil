@@ -1,5 +1,6 @@
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
+import { text, useSection } from "@/lib/cms-content";
 
 const STEPS = [
   {
@@ -20,6 +21,10 @@ const STEPS = [
 ];
 
 export function HowItWorks() {
+  const section = useSection("how_it_works");
+
+  if (section?.enabled === false) return null;
+
   return (
     <section className="relative isolate overflow-hidden py-20 lg:py-28">
       <div
@@ -28,9 +33,12 @@ export function HowItWorks() {
       />
       <div className="section-shell">
         <SectionHeading
-          eyebrow="How It Works"
-          title="Three steps to get going"
-          description="A short, transparent path from registration to responsible play."
+          eyebrow={text(section?.name, "How It Works")}
+          title={text(section?.heading, "Three steps to get going")}
+          description={text(
+            section?.description,
+            "A short, transparent path from registration to responsible play.",
+          )}
         />
         <ol className="mt-12 grid gap-6 lg:grid-cols-3">
           {STEPS.map((step, i) => (

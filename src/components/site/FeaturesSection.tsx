@@ -1,6 +1,7 @@
 import { Gauge, Smartphone, Headset, ShieldCheck } from "lucide-react";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
+import { text, useSection } from "@/lib/cms-content";
 
 const FEATURES = [
   {
@@ -26,12 +27,19 @@ const FEATURES = [
 ];
 
 export function FeaturesSection() {
+  const section = useSection("why_us");
+
+  if (section?.enabled === false) return null;
+
   return (
     <section className="section-shell py-20 lg:py-28">
       <SectionHeading
-        eyebrow="Built For You"
-        title="Designed around the details that matter"
-        description="Four principles shape every screen on the platform, from the first tap to the last."
+        eyebrow={text(section?.name, "Built For You")}
+        title={text(section?.heading, "Designed around the details that matter")}
+        description={text(
+          section?.description,
+          "Four principles shape every screen on the platform, from the first tap to the last.",
+        )}
       />
       <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {FEATURES.map((feature, i) => (

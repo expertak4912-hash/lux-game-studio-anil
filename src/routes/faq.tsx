@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { FaqSection } from "@/components/site/FaqSection";
-import { PromoBanner } from "@/components/site/PromoBanner";
 import { FAQS } from "@/lib/site";
 
 const title = "FAQ — Common Questions Answered | Strike Arena";
@@ -45,7 +44,6 @@ function FaqPage() {
         description="Everything people usually ask before exploring the platform, answered without marketing spin."
       />
       <FaqSection />
-      <PromoBanner />
     </>
   );
 }

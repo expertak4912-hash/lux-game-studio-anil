@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import aboutImage from "@/assets/about.jpg";
 import { BRAND } from "@/lib/site";
+import { text, useSection } from "@/lib/cms-content";
 import { Reveal } from "./Reveal";
 
 const POINTS = [
@@ -13,6 +14,10 @@ const POINTS = [
 ];
 
 export function AboutSection() {
+  const section = useSection("about");
+
+  if (section?.enabled === false) return null;
+
   return (
     <section id="about" className="section-shell py-20 lg:py-28">
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
@@ -34,15 +39,15 @@ export function AboutSection() {
         </Reveal>
 
         <Reveal delay={120} className="space-y-6">
-          <span className="eyebrow">About {BRAND}</span>
+          <span className="eyebrow">{text(section?.name, `About ${BRAND}`)}</span>
           <h2 className="text-3xl font-extrabold text-balance sm:text-4xl">
-            A premium home for sports and gaming entertainment
+            {text(section?.heading, "A premium home for sports and gaming entertainment")}
           </h2>
           <p className="text-base leading-relaxed text-muted-foreground">
-            {BRAND} brings sports coverage and gaming categories together in one calm, modern
-            interface. Instead of crowded screens and flashing banners, the platform focuses on
-            clear structure, honest descriptions and fast navigation, so you always know exactly
-            where you are.
+            {text(
+              section?.description,
+              `${BRAND} brings sports coverage and gaming categories together in one calm, modern interface. Instead of crowded screens and flashing banners, the platform focuses on clear structure, honest descriptions and fast navigation, so you always know exactly where you are.`,
+            )}
           </p>
           <ul className="grid gap-3">
             {POINTS.map((point) => (

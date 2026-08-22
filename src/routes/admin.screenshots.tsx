@@ -12,7 +12,7 @@ export const Route = createFileRoute("/admin/screenshots")({
         { name: "title", label: "Title" },
         { name: "category", label: "Category" },
       ]}
-      defaults={{ status: "published", category: "platform" }}
+      defaults={{ status: "published", category: "demo" }}
       fields={[
         { name: "title", label: "Title" },
         {
@@ -20,8 +20,7 @@ export const Route = createFileRoute("/admin/screenshots")({
           label: "Category",
           type: "select",
           options: [
-            { label: "Platform", value: "platform" },
-            { label: "Demo", value: "demo" },
+            { label: "Payment", value: "demo" },
           ],
         },
         { name: "image_url", label: "Image", type: "image" },

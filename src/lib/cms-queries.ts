@@ -1,5 +1,10 @@
 import { queryOptions } from "@tanstack/react-query";
-import { fetchPublic, type PublicQueryInput, type PublicTable } from "./cms.functions";
+import {
+  fetchPublic,
+  fetchSiteChrome,
+  type PublicQueryInput,
+  type PublicTable,
+} from "./cms.functions";
 import type {
   AvailableSite,
   BackgroundSetting,
@@ -65,6 +70,23 @@ export const navigationQuery = () =>
   cmsList<NavigationItem>("navigation_items", { publishedOnly: true });
 export const backgroundsQuery = () =>
   cmsList<BackgroundSetting>("background_settings", { order: "label" });
+
+export type SiteChrome = {
+  siteSettings: SiteSettings | null;
+  themeSettings: ThemeSettings | null;
+  supportSettings: SupportSettings | null;
+  footerSettings: FooterSettings | null;
+  backgroundSettings: BackgroundSetting[];
+  navigationItems: NavigationItem[];
+};
+
+export const siteChromeQuery = () =>
+  queryOptions({
+    queryKey: ["cms", "site-chrome"],
+    queryFn: () => fetchSiteChrome() as Promise<SiteChrome>,
+    staleTime: 30_000,
+  });
+
 export const homepageSectionsQuery = () => cmsList<HomepageSection>("homepage_sections");
 export const heroSlidesQuery = () => cmsList<HeroSlide>("hero_slides", { publishedOnly: true });
 export const sportsQuery = () => cmsList<SportRow>("sports", { publishedOnly: true });

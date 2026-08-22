@@ -5,7 +5,6 @@ import { SportsSection } from "@/components/site/SportsSection";
 import { GamesSection } from "@/components/site/GamesSection";
 import { FeaturesSection } from "@/components/site/FeaturesSection";
 import { HowItWorks } from "@/components/site/HowItWorks";
-import { PromoBanner } from "@/components/site/PromoBanner";
 import { PromotionsSection } from "@/components/site/PromotionsSection";
 import { ScreenshotsSection } from "@/components/site/ScreenshotsSection";
 import { AvailableSitesSection } from "@/components/site/AvailableSitesSection";
@@ -40,9 +39,8 @@ function Index() {
       <FeaturesSection />
       <HowItWorks />
       <AvailableSitesSection />
-      <ScreenshotsSection category="platform" sectionSlug="platform_screenshots" />
+      <ScreenshotsSection sectionSlug="screenshots" />
       <PromotionsSection />
-      <PromoBanner />
       <AboutSection />
       <FaqSection />
       <ContactSection />

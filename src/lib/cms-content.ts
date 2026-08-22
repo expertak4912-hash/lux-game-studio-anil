@@ -22,17 +22,13 @@ import {
   blogCategoriesQuery,
   blogPostsQuery,
   faqsQuery,
-  footerSettingsQuery,
   gamesQuery,
   heroSlidesQuery,
   homepageSectionsQuery,
-  navigationQuery,
   promotionsQuery,
   screenshotsQuery,
-  siteSettingsQuery,
   sportsQuery,
-  supportSettingsQuery,
-  themeSettingsQuery,
+  siteChromeQuery,
   type HomepageSection,
 } from "./cms-queries";
 import { BRAND, WHATSAPP_LINK } from "./site";
@@ -66,22 +62,40 @@ export const gameImage = (slug: string, url?: string | null) =>
 
 /** Global, site-wide CMS data (prefetched in the root route loader). */
 export function useSiteSettings() {
-  return useSuspenseQuery(siteSettingsQuery()).data;
+  return useSuspenseQuery({
+    ...siteChromeQuery(),
+    select: (data) => data.siteSettings,
+  }).data;
 }
 export function useThemeSettings() {
-  return useSuspenseQuery(themeSettingsQuery()).data;
+  return useSuspenseQuery({
+    ...siteChromeQuery(),
+    select: (data) => data.themeSettings,
+  }).data;
 }
 export function useSupportSettings() {
-  return useSuspenseQuery(supportSettingsQuery()).data;
+  return useSuspenseQuery({
+    ...siteChromeQuery(),
+    select: (data) => data.supportSettings,
+  }).data;
 }
 export function useFooterSettings() {
-  return useSuspenseQuery(footerSettingsQuery()).data;
+  return useSuspenseQuery({
+    ...siteChromeQuery(),
+    select: (data) => data.footerSettings,
+  }).data;
 }
 export function useNavigation() {
-  return useSuspenseQuery(navigationQuery()).data;
+  return useSuspenseQuery({
+    ...siteChromeQuery(),
+    select: (data) => data.navigationItems,
+  }).data;
 }
 export function useBackgrounds() {
-  return useSuspenseQuery(backgroundsQuery()).data;
+  return useSuspenseQuery({
+    ...siteChromeQuery(),
+    select: (data) => data.backgroundSettings,
+  }).data;
 }
 export function useHomepageSections() {
   return useSuspenseQuery(homepageSectionsQuery()).data;

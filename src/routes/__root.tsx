@@ -17,12 +17,7 @@ import { FloatingWhatsApp } from "@/components/site/FloatingWhatsApp";
 import { CmsTheme } from "@/components/site/CmsTheme";
 import { useThemeSettings } from "@/lib/cms-content";
 import {
-  backgroundsQuery,
-  footerSettingsQuery,
-  navigationQuery,
-  siteSettingsQuery,
-  supportSettingsQuery,
-  themeSettingsQuery,
+  siteChromeQuery,
 } from "@/lib/cms-queries";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -89,14 +84,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   loader: async ({ context }) => {
     // Site-wide CMS data used by the header, footer, theme and WhatsApp buttons.
-    await Promise.all([
-      context.queryClient.ensureQueryData(siteSettingsQuery()),
-      context.queryClient.ensureQueryData(themeSettingsQuery()),
-      context.queryClient.ensureQueryData(supportSettingsQuery()),
-      context.queryClient.ensureQueryData(footerSettingsQuery()),
-      context.queryClient.ensureQueryData(navigationQuery()),
-      context.queryClient.ensureQueryData(backgroundsQuery()),
-    ]);
+    await context.queryClient.ensureQueryData(siteChromeQuery());
   },
   head: () => ({
     meta: [

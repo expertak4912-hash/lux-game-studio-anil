@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { SportsSection } from "@/components/site/SportsSection";
-import { PromoBanner } from "@/components/site/PromoBanner";
 
 const title = "Sports Hub — Cricket, Football, Tennis & More | Strike Arena";
 const description =
@@ -30,7 +29,6 @@ function SportsPage() {
         description="Every discipline gets its own clear space, from floodlit cricket nights to weekend league football, with fixtures that stay readable on any screen."
       />
       <SportsSection />
-      <PromoBanner />
     </>
   );
 }

@@ -89,6 +89,51 @@ export const fetchPublic = createServerFn({ method: "GET" })
     return (await listRows(spec.name, options, spec.defaultSort)) as CmsRow[];
   });
 
+/** Fetches the chrome data shared by every public route in one database round trip. */
+export const fetchSiteChrome = createServerFn({ method: "GET" }).handler(
+  async (): Promise<{
+    siteSettings: CmsRow | null;
+    themeSettings: CmsRow | null;
+    supportSettings: CmsRow | null;
+    footerSettings: CmsRow | null;
+    backgroundSettings: CmsRow[];
+    navigationItems: CmsRow[];
+  }> => {
+  const { requirePublicReadable } = await import("@/server/db/collections");
+  const { findSingleton, listRows } = await import("@/server/db/repository");
+
+  const site = requirePublicReadable("site_settings");
+  const theme = requirePublicReadable("theme_settings");
+  const support = requirePublicReadable("support_settings");
+  const footer = requirePublicReadable("footer_settings");
+  const backgrounds = requirePublicReadable("background_settings");
+  const navigation = requirePublicReadable("navigation_items");
+
+  const [siteSettings, themeSettings, supportSettings, footerSettings, backgroundSettings, navigationItems] =
+    await Promise.all([
+      findSingleton(site.name, site.singletonKey!),
+      findSingleton(theme.name, theme.singletonKey!),
+      findSingleton(support.name, support.singletonKey!),
+      findSingleton(footer.name, footer.singletonKey!),
+      listRows(backgrounds.name, {}, backgrounds.defaultSort),
+      listRows(
+        navigation.name,
+        { publishedOnly: true },
+        navigation.defaultSort,
+      ),
+    ]);
+
+    return {
+      siteSettings: siteSettings as CmsRow | null,
+      themeSettings: themeSettings as CmsRow | null,
+      supportSettings: supportSettings as CmsRow | null,
+      footerSettings: footerSettings as CmsRow | null,
+      backgroundSettings: backgroundSettings as CmsRow[],
+      navigationItems: navigationItems as CmsRow[],
+    };
+  },
+);
+
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Please enter your name.").max(100),
   email: z

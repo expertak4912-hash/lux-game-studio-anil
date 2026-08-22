@@ -3,7 +3,6 @@ import { ArrowLeft } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { CmsContent } from "@/components/site/CmsContent";
 import { Reveal } from "@/components/site/Reveal";
-import { PromoBanner } from "@/components/site/PromoBanner";
 import { sportBySlugQuery } from "@/lib/cms-queries";
 import { sportImage } from "@/lib/cms-content";
 
@@ -84,7 +83,6 @@ function SportDetail() {
         </div>
       </section>
 
-      <PromoBanner />
     </>
   );
 }

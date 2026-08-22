@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { GamesSection } from "@/components/site/GamesSection";
 import { HowItWorks } from "@/components/site/HowItWorks";
-import { PromoBanner } from "@/components/site/PromoBanner";
 
 const title = "Games — Explore Every Category | Strike Arena";
 const description =
@@ -36,7 +35,6 @@ function GamesPage() {
         description="Availability of individual titles depends on your region and applicable licensing."
       />
       <HowItWorks />
-      <PromoBanner />
     </>
   );
 }

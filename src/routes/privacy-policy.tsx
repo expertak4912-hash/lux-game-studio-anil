@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { CmsContent } from "@/components/site/CmsContent";
 import { LegalContent, type LegalBlock } from "@/components/site/LegalContent";
+import { pageBySlugQuery } from "@/lib/cms-queries";
 
 const title = "Privacy Policy | Strike Arena";
 const description =
@@ -43,6 +45,7 @@ const blocks: LegalBlock[] = [
 ];
 
 export const Route = createFileRoute("/privacy-policy")({
+  loader: ({ context }) => context.queryClient.ensureQueryData(pageBySlugQuery("privacy-policy")),
   head: () => ({
     meta: [
       { title },
@@ -57,6 +60,29 @@ export const Route = createFileRoute("/privacy-policy")({
 });
 
 function PrivacyPage() {
+  const page = Route.useLoaderData();
+
+  if (page) {
+    return (
+      <>
+        <PageHero
+          eyebrow="Privacy Policy"
+          title={page.title}
+          description={page.short_description || description}
+        />
+        {page.content && (
+          <section className="section-shell py-16 lg:py-24">
+            <div className="mx-auto max-w-3xl">
+              <article className="glass-card rounded-3xl p-6 sm:p-8">
+                <CmsContent html={page.content} />
+              </article>
+            </div>
+          </section>
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       <PageHero
